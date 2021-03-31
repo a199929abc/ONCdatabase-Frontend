@@ -4,7 +4,8 @@ import { Link, NavLink } from 'react-router-dom';
 import React, { useState, useEffect, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import Nav from '../Nav/Nav';
-import { Input, Space, Row, Col, Typography, Checkbox,Descriptions,Badge ,Image} from 'antd';
+import { Input, Space, Row, Col,Table, Typography, Checkbox,Descriptions,Badge ,Image,Button
+,Cascader,Alert} from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { colors } from '@material-ui/core';
@@ -19,7 +20,10 @@ function SearchComp() {
     const [checkBoxFlag, setCheckBoxFlag] = useState("C");
     const [searchValue, setSearchValue] = useState("");
     const [part, setPart]= useState([]);
-    
+    const [rev, setRev]  =useState("");
+    const [error, setError]=useState("OK");
+    const [errorCode, setErrorCode]=useState("");
+    const [revList, setRevList]  = useState([]);
 
 
     const onChange = checkedValues => {
@@ -41,8 +45,10 @@ function SearchComp() {
         console.log("Sending....flag is:"+checkBoxFlag);
         const partJSON = {
             partno: value,
-            status: checkBoxFlag
+            status: checkBoxFlag,
+            rev: rev
         }
+        
         SendPartRequest(partJSON);
     };
     const SendPartRequest = async (partJSON) => {
@@ -52,14 +58,19 @@ function SearchComp() {
             url: 'http://142.104.17.106:8011/nav/search',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             data: JSON.stringify(partJSON)
-        }).then(Response => { {return Response.data.data}});
+        }).then(Response => { {return Response}});
         console.log(res);
-        setPart(res);
+        setPart(res.data.data);
+        setError(res.data.msg);
+        console.log(res.data.msg);
+        if(res.data.msg=="Part is not unique. Please specify Revision"){
+            setRevList(res.data.data);
+        }
+        
         
     }
 
     const currentStatus = () => {
-        console.log(part.status);
         switch(part.status) {
             
           case "C":   return <Badge status="processing" text="Current in use" />;
@@ -74,6 +85,43 @@ function SearchComp() {
     }
 
 
+
+    const columns = [{
+        title: 'PartNo',
+        dataIndex: 'partno',
+        render: text => <a href="#">{text}</a>,
+      }, {
+        title: 'BOMPartNo',
+        dataIndex: 'bompartno',
+      }, {
+        title: 'Rev',
+        dataIndex: 'rev',
+      },{
+        title: 'BOMRev',
+        dataIndex: 'bomrev',
+      },{
+        title: 'Quantity',
+        dataIndex: 'qty',
+      }];
+
+      const revColumns = [
+          {title: 'Revision',
+          dataIndex: 'rev',
+          render: text => <a href="#">{text}</a>,},
+          {title: 'Rev Created Date',
+          dataIndex: 'revcreated',
+         }]
+      
+      const isUnique=()=>{
+          
+        return error == "Part is not unique. Please specify Revision";
+      }
+      useEffect(() => {
+        
+  
+     }, []);
+     
+
     return (
         <Fragment>
             <Row>
@@ -87,14 +135,23 @@ function SearchComp() {
                         enterButton="Search"
                         size="large"
                         onSearch={onSearch}
-                    />
+                    />     
                 </Col>
                 <Checkbox.Group  onChange={onChange} style={{ width: '100%' }} defaultValue={['Current']}>
-                    <Col span={24}>
+                    <Col span={10}>
                         <Checkbox value="Current">Current</Checkbox>
                         <Checkbox value="Suspend">Suspend</Checkbox>
                         <Checkbox value="Closed">Closed</Checkbox>
                     </Col>
+                    <br/>
+                    {isUnique()?(<Col span={10}>
+                        <Alert message={error} type="error" showIcon/>
+                        <Table
+                        columns={revColumns}
+                        dataSource={revList}/>
+                        </Col>):(<></>)}
+                    <br/>
+                    <Col span={3} ><Input placeholder="Revision" onChange={e => setRev(e.target.value)}/></Col>
                 </Checkbox.Group>
              {/*    <div>
                     {<li>{part.rev}</li>}
@@ -120,18 +177,11 @@ function SearchComp() {
                 <Descriptions.Item label="VendorPartNo">{}</Descriptions.Item> */}
 
                 <Descriptions.Item label="Bill of Materials" span={3} >
-                {part.jsonbom&&part.jsonbom.map(item => 
-                    (<li >{item.rev}</li>)
-                )}
-                
-                <br />
-                Quantity : 
-                <br />
-                nfgName :
-                <br />
-                VendorPartNo :
-                <br />
-                
+                <Table
+                columns={columns}
+                dataSource={part.jsonbom}
+                />
+
                 </Descriptions.Item> 
             </Descriptions>
         ):(<><Title level={3}>Sorry, Can't find your part . . .    </Title>
