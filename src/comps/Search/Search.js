@@ -55,7 +55,7 @@ function SearchComp() {
         console.log(partJSON);
         var res = await axios({
             method: 'POST',
-            url: 'http://142.104.17.106:8011/nav/search',
+            url: 'http://142.104.17.117:8011/nav/search',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             data: JSON.stringify(partJSON)
         }).then(Response => { {return Response}});
@@ -87,10 +87,7 @@ function SearchComp() {
 
 
     const columns = [{
-        title: 'PartNo',
-        dataIndex: 'partno',
-        render: text => <a href="#">{text}</a>,
-      }, {
+     
         title: 'BOMPartNo',
         dataIndex: 'bompartno',
       }, {
@@ -140,9 +137,11 @@ function SearchComp() {
                 <Checkbox.Group  onChange={onChange} style={{ width: '100%' }} defaultValue={['Current']}>
                     <Col span={10}>
                         <Checkbox value="Current">Current</Checkbox>
-                        <Checkbox value="Suspend">Suspend</Checkbox>
+                        <Checkbox value="Suspend">Superseded</Checkbox>
                         <Checkbox value="Closed">Closed</Checkbox>
                     </Col>
+                    <br/>
+                    <Col span={3} ><Input placeholder="Revision" onChange={e => setRev(e.target.value)}/></Col>
                     <br/>
                     {isUnique()?(<Col span={10}>
                         <Alert message={error} type="error" showIcon/>
@@ -151,7 +150,6 @@ function SearchComp() {
                         dataSource={revList}/>
                         </Col>):(<></>)}
                     <br/>
-                    <Col span={3} ><Input placeholder="Revision" onChange={e => setRev(e.target.value)}/></Col>
                 </Checkbox.Group>
              {/*    <div>
                     {<li>{part.rev}</li>}
