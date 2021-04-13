@@ -4,13 +4,15 @@ import { Link, NavLink } from 'react-router-dom';
 import React, { useState, useEffect, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import Nav from '../Nav/Nav';
-import { Input, Space, Row, Col,Table, Typography, Checkbox,Descriptions,Badge ,Image,Button
+import { Input, Space, Row, Col, Typography, Checkbox,Descriptions,Badge ,Image,Button
 ,Cascader,Alert} from 'antd';
+import { Table } from "ant-table-extensions";
 import { AudioOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { colors } from '@material-ui/core';
 import notFind from '../../img/cannotfind.png';
 import { CenterFocusStrong } from '@material-ui/icons';
+import { loadProgressBar } from  'axios-progress-bar';
 
 
 function SearchComp() {
@@ -55,7 +57,7 @@ function SearchComp() {
         console.log(partJSON);
         var res = await axios({
             method: 'POST',
-            url: 'http://142.104.17.117:8011/nav/search',
+            url: 'http://192.168.0.35:8011/nav/search',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             data: JSON.stringify(partJSON)
         }).then(Response => { {return Response}});
@@ -89,8 +91,15 @@ function SearchComp() {
     const columns = [{
      
         title: 'BOMPartNo',
-        dataIndex: 'bompartno',
-      }, {
+        dataIndex: 'bommfgpartno',
+      }
+      ,{title :'BOMPartName',
+        dataIndex:'instructions'},
+        {title :'mfgPartNo',
+        dataIndex:'mfgpartno'},  
+        {title :'mfgPartName',
+        dataIndex:'bommfgname'},
+        {
         title: 'Rev',
         dataIndex: 'rev',
       },{
@@ -123,6 +132,7 @@ function SearchComp() {
         <Fragment>
             <Row>
                 <Col flex={2}>
+                   
                     <Title level={2} type="secondary">Part Search </Title>
                 </Col>
                 <Col flex={3}>
@@ -147,7 +157,9 @@ function SearchComp() {
                         <Alert message={error} type="error" showIcon/>
                         <Table
                         columns={revColumns}
-                        dataSource={revList}/>
+                        dataSource={revList}
+
+                        />
                         </Col>):(<></>)}
                     <br/>
                 </Checkbox.Group>
@@ -164,7 +176,7 @@ function SearchComp() {
                 2019-04-24 18:00:00
                 </Descriptions.Item> */}
                 <Descriptions.Item label="Status" span={2}>
-                {currentStatus()}
+                {currentStatus()}                   
                 </Descriptions.Item> 
                 <Descriptions.Item label="mfgName" >{part.mfgName}</Descriptions.Item>
             
@@ -178,6 +190,11 @@ function SearchComp() {
                 <Table
                 columns={columns}
                 dataSource={part.jsonbom}
+                exportable
+                exportableProps={{ showColumnPicker: true }}
+                searchableProps={{ fuzzySearch: true }}
+                
+
                 />
 
                 </Descriptions.Item> 

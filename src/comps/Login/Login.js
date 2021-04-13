@@ -37,7 +37,7 @@ const GetLoginResponse = async(userJSON)=>{
     console.log(userJSON);
     var res= await axios({
     method: 'POST',
-    url: 'http://142.104.17.117:8011/login',
+    url: 'http://192.168.0.35:8011/login',
     headers: { 'Content-Type': 'application/json','Accept': 'application/json'},
     data: JSON.stringify(userJSON)
     }).then(Response=>{{return Response.data.status}});
