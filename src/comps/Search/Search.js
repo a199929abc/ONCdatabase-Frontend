@@ -57,7 +57,7 @@ function SearchComp() {
         console.log(partJSON);
         var res = await axios({
             method: 'POST',
-            url: 'http://192.168.0.35:8011/nav/search',
+            url: 'http://142.104.17.117:8011/nav/search',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             data: JSON.stringify(partJSON)
         }).then(Response => { {return Response}});
@@ -100,7 +100,7 @@ function SearchComp() {
         {title :'mfgPartName',
         dataIndex:'bommfgname'},
         {
-        title: 'Rev',
+        title: 'parentRev',
         dataIndex: 'rev',
       },{
         title: 'BOMRev',
@@ -180,7 +180,7 @@ function SearchComp() {
                 </Descriptions.Item> 
                 <Descriptions.Item label="mfgName" >{part.mfgName}</Descriptions.Item>
             
-{/*             <Descriptions.Item label="BOMPPartNo">{}</Descriptions.Item>
+                {/*<Descriptions.Item label="BOMPPartNo">{}</Descriptions.Item>
                 <Descriptions.Item label="Description" span={2}>{}</Descriptions.Item>
                 <Descriptions.Item label="Quantity">{}</Descriptions.Item>
                
@@ -193,10 +193,8 @@ function SearchComp() {
                 exportable
                 exportableProps={{ showColumnPicker: true }}
                 searchableProps={{ fuzzySearch: true }}
-                
-
+            
                 />
-
                 </Descriptions.Item> 
             </Descriptions>
         ):(<><Title level={3}>Sorry, Can't find your part . . .    </Title>

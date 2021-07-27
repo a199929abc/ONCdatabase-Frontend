@@ -2,6 +2,7 @@ import React, {useState,useEffect, Fragment} from 'react';
 import { Grid, Paper, TextField, Button, responsiveFontSizes } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import LockOpenOutlined from '@material-ui/icons/LockOpenOutlined';
+import logo from '../../img/logo.jpg';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
@@ -37,7 +38,7 @@ const GetLoginResponse = async(userJSON)=>{
     console.log(userJSON);
     var res= await axios({
     method: 'POST',
-    url: 'http://192.168.0.35:8011/login',
+    url: 'http://142.104.17.117:8011/login',
     headers: { 'Content-Type': 'application/json','Accept': 'application/json'},
     data: JSON.stringify(userJSON)
     }).then(Response=>{{return Response.data.status}});
@@ -83,11 +84,10 @@ const GetLoginResponse = async(userJSON)=>{
             <Grid className="form-inner">
                 <Paper  elevation={10} style={paperStyle}>
                 <Grid align='center'>
-                    <Avatar style={avatarStyle}><LockOpenOutlined/> </Avatar>
+                    <Avatar style={avatarStyle} src={logo} sizes='big' >  </Avatar>
                     
                    <h2>ONC Database System</h2>
                  
-                       
                     {loginCheck()}
 
                   
@@ -97,6 +97,8 @@ const GetLoginResponse = async(userJSON)=>{
                         onChange={e => setuserName (e.target.value)} 
                         value={userName.value}/>
                     </div>
+
+
                     <div className="form-group">
                         <TextField style={textFieldStyle} placeholder='Enter Password' label="Password" 
                         type="password" name="password" id ="password"  

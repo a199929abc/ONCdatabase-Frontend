@@ -7,6 +7,7 @@ import Main from './pages/Main/Main';
 import Nav from  './comps/Nav/Nav';
 import Search from './comps/Search/Search'
 import SearchComp from './comps/Search/Search';
+import VideoComp from './comps/Video/Video';
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
       <Route path="/nav/main"     component={Main}/>
       <Route path ='/nav'     component={Nav}/>
       <Route path="/nav/search"   component={SearchComp}/>
+      <Route path="/nav/video"   component={VideoComp}/>
       </Switch>
     </div>
     </Router>

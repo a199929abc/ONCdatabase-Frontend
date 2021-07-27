@@ -15,6 +15,7 @@ import Login from '../Login/Login';
 import More from '../../pages/More/More';
 import Main from '../../pages/Main/Main';
 import SearchComp from '../Search/Search';
+import VideoComp from '../Video/Video';
 import {BrowserRouter as Router,Switch, Route ,Link,NavLink} from 'react-router-dom';
 
 
@@ -40,13 +41,16 @@ function Nav() {
      
                 <Menu.Item key="1"><Link to="/nav" >Home</Link></Menu.Item>
                 <Menu.Item key="2"><Link to="/nav/search">Part Search</Link></Menu.Item>
-                <Menu.Item key="3"><Link to="/nav/more">More</Link></Menu.Item>
+                <Menu.Item key="3"><Link to="/nav/video">Video</Link></Menu.Item>
+                <Menu.Item key="4"><Link to="/nav/more">More</Link></Menu.Item>
         
             </Menu>
             </Header>
 
             <Layout>
-                <Sider width={200} className="site-layout-background">
+
+           {/*          
+                           <Sider width={200} className="site-layout-background">
                 <Menu
                     mode="inline"
                     defaultSelectedKeys={['1']}
@@ -58,7 +62,7 @@ function Nav() {
                         <Menu.Item key="3">Developing</Menu.Item>
                         <Menu.Item key="4">Developing</Menu.Item>
                     </SubMenu>
-           {/*          <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
+           <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
                         <Menu.Item key="5">option5</Menu.Item>
                         <Menu.Item key="6">option6</Menu.Item>
                         <Menu.Item key="7">option7</Menu.Item>
@@ -69,11 +73,12 @@ function Nav() {
                         <Menu.Item key="10">option10</Menu.Item>
                         <Menu.Item key="11">option11</Menu.Item>
                         <Menu.Item key="12">option12</Menu.Item>
-                    </SubMenu> */}
-                </Menu>
-            </Sider>
+                    </SubMenu> 
+                                    </Menu>
+            </Sider>*/}
+
             <Layout style={{ padding: '0 24px 24px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb style={{ margin: '10px 0' }}>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>Search</Breadcrumb.Item>
                 </Breadcrumb>
@@ -89,6 +94,7 @@ function Nav() {
                                {/*  <Route path="/nav/main"   component={Main}/> */}
                                 <Route path="/nav/more"   component={More}/>
                                 <Route path="/nav/search" component={SearchComp}/>
+                                <Route path="/nav/video" component={VideoComp}/>
                                 </Switch>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Design ©2021 Created by Kaiheng Zhang</Footer>
