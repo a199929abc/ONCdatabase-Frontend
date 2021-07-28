@@ -1,7 +1,7 @@
 
 import Nav from '../../comps/Nav/Nav';
 import banzhuan from '../../img/banzhuan.jpg';
-import {Image,Typography,Divider,List,Menu,Layout, Button} from 'antd';
+import {Image,Typography,Divider,List,Menu,Layout, Button,Radio} from 'antd';
 import ReactPlayer from 'react-player'
 import { Breadcrumb } from 'antd';
 import React, { useState,useEffect } from "react";
@@ -16,7 +16,8 @@ function VideoComp() {
     const {Title} = Typography;
     const { Header, Content,Footer,Sider } = Layout;
     const [openKeys, setOpenKeys] = React.useState(['sub1']);
-    const [playbackRate, setPlaybackRate] = React.useState(1)
+    const [playbackRate, setPlaybackRate] = React.useState(1);
+    const [speed, setSpeed]= useState("default");
 
     // submenu keys of first level
     const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
@@ -48,6 +49,9 @@ function VideoComp() {
         setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         }
     };
+    const handleSpeedChange = e =>{
+        setSpeed(e.target.value);
+    }
     
     
     
@@ -101,12 +105,11 @@ function VideoComp() {
                             }}
                         />
 
-                            <Button onClick={() => setPlaybackRate(0.5)} 
-                            type="primary" shape="round"  size="small">x0.5</Button>
-                            <Button onClick={() => setPlaybackRate(1)} 
-                            type="primary" shape="round"  size="small">x1</Button>
-                            <Button onClick={() => setPlaybackRate(2)} 
-                            type="primary" shape="round"  size="small">x2</Button>
+                    <Radio.Group value={speed} onChange={handleSpeedChange}>
+                            <Radio.Button  onClick={() => setPlaybackRate(0.5)} value="large"> x0.5 </Radio.Button>
+                            <Radio.Button  onClick={() => setPlaybackRate(1)}  value="default"> x1 </Radio.Button>
+                            <Radio.Button  onClick={() => setPlaybackRate(2)}  value="small"> x2 </Radio.Button>
+                    </Radio.Group>
                 
                 </Content>
                 </Layout>
