@@ -1,7 +1,9 @@
 
 import Nav from '../../comps/Nav/Nav';
+import axios from 'axios';
+
 import banzhuan from '../../img/banzhuan.jpg';
-import {Image,Typography,Divider,List,Menu,Layout, Button,Radio} from 'antd';
+import {Image,Typography,Divider,List,Menu,Layout, Button,Radio,Cascader} from 'antd';
 import ReactPlayer from 'react-player'
 import { Breadcrumb } from 'antd';
 import React, { useState,useEffect } from "react";
@@ -10,8 +12,9 @@ import { ScreenShareTwoTone } from '@material-ui/icons';
 
 function VideoComp() {
     const [curURL, setCurURL]  =useState("https://mvbkz.s3.us-west-1.amazonaws.com/csdn/day1/35.+Search+Insert+Position.mp4");
-    const [curTitle,setTitle]  = useState("162. Find Peak Element（基础）");
-    const [curDate, setDate] = useState(1);
+    const [curTitle,setTitle]  = useState("");
+    const [video, setVideo]= useState([]);
+    const [curDay,setCurDay] = useState(1);
     const { SubMenu } = Menu;
     const {Title} = Typography;
     const { Header, Content,Footer,Sider } = Layout;
@@ -38,9 +41,6 @@ function VideoComp() {
       };
 
 
-    
-    
-      
     const onOpenChange = keys => {
         const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
         if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
@@ -52,39 +52,66 @@ function VideoComp() {
     const handleSpeedChange = e =>{
         setSpeed(e.target.value);
     }
-    
-    
+
+    const VideoRequest = async (videoJSON) => {
+        console.log(videoJSON);
+        var res = await axios({
+            method: 'POST',
+            url: 'http://142.104.17.117:8011/nav/video',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            data: JSON.stringify(videoJSON)
+        }).then(Response => { {return Response}});
+        console.log(res);    
+        setVideo(res.data.data); 
+    }
+    const sendVideoRequest = value => {
+       
+        const videoJSON = {
+           day: parseInt(curDay),
+        }
+        VideoRequest(videoJSON);
+        
+    }
+    const recursion  = dataSource => {
+        return (
+          dataSource.map((menu, index) => {
+            if (menu.children) {
+              return (
+                <SubMenu key={menu.key} title={menu.title}>
+                  {recursion(menu.children)}
+                </SubMenu>
+              )
+            } else {
+              return (<Menu.Item key={video[index].videoId}  onClick={e =>{
+               setCurURL(menu.url);setTitle(menu.title);}}  >{menu.title} </Menu.Item>)
+            }
+          })
+        )
+      }
+      //onClick={e => setCurURL(video[index].url),
+        //setTitle(video[index].title)} 
+        const options = [
+            {
+              value: 1,label: 1,},{value: 2, label: 2,},{value: 3,label: 3,},{value: 4,label: 4,},{value: 5,label: 5,},{value: 6,label: 6,},
+            {value: 7,label: 7,},{value: 8,label: 8,},{value: 9,label: 9,},{value: 10,label: 10,},]; 
+        const changeSelectDay = value => {
+            setCurDay(value);
+        }
     
     return (
             <div>
                 <Layout >
-                 <Sider width={200} className="site-layout-background">
+                 <Sider width={270} className="site-layout-background">
                     <Menu mode="inline" 
                     openKeys={openKeys} 
                     onOpenChange={onOpenChange} 
-                    style={{ width: 200 ,height:'100%' }}>
-                    <SubMenu key="sub1"  title="Navigation One">
-                        <Menu.Item key="1" onClick={e => setCurURL("https://mvbkz.s3.us-west-1.amazonaws.com/csdn/day1/349.+Intersection+of+Two+Arrays%EF%BC%88%E5%9F%BA%E7%A1%80%EF%BC%89.mp4",
-                        setTitle("167. Two Sum II - Input array is sorted（基础）")
-                        )}>Option 1</Menu.Item>
-                        <Menu.Item key="2">Option 2</Menu.Item>
-                        <Menu.Item key="3">Option 3</Menu.Item>
-                        <Menu.Item key="4">Option 4</Menu.Item>
+                    style={{ width: 270 ,height:'100%' }}>
+                    <SubMenu  key="sub1"  title={"  Day : "+curDay}>
+
+                        {recursion(video)}
+                        
                     </SubMenu>
-                    <SubMenu key="sub2"  title="Navigation Two">
-                        <Menu.Item key="5">Option 5</Menu.Item>
-                        <Menu.Item key="6">Option 6</Menu.Item>
-                        <SubMenu key="sub3" title="Submenu">
-                        <Menu.Item key="7">Option 7</Menu.Item>
-                        <Menu.Item key="8">Option 8</Menu.Item>
-                        </SubMenu>
-                    </SubMenu>
-                    <SubMenu key="sub4" title="Navigation Three">
-                        <Menu.Item key="9">Option 9</Menu.Item>
-                        <Menu.Item key="10">Option 10</Menu.Item>
-                        <Menu.Item key="11">Option 11</Menu.Item>
-                        <Menu.Item key="12">Option 12</Menu.Item>
-                    </SubMenu>
+                    
                     </Menu> 
                     </Sider>
                           
@@ -94,6 +121,9 @@ function VideoComp() {
                             margin: 0,
                             minHeight: 280,
                                     }}>
+                <Cascader size="large" options={options} placeholder="Select Date" onChange={changeSelectDay} />
+                {' '}{' '}{' '}{' '}{' '}
+                <Button onClick={sendVideoRequest} size={'large'}>Loading Video</Button>
                 <Title level={3} style={{padding:"10px"}}>{curTitle}</Title>
                 <ReactPlayer
                             url={curURL}
@@ -104,7 +134,7 @@ function VideoComp() {
                                
                             }}
                         />
-
+                    
                     <Radio.Group value={speed} onChange={handleSpeedChange}>
                             <Radio.Button  onClick={() => setPlaybackRate(0.5)} value="large"> x0.5 </Radio.Button>
                             <Radio.Button  onClick={() => setPlaybackRate(1)}  value="default"> x1 </Radio.Button>
