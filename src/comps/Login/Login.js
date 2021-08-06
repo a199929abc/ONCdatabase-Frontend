@@ -86,7 +86,7 @@ const GetLoginResponse = async(userJSON)=>{
                 <Grid align='center'>
                     <Avatar style={avatarStyle} src={logo} sizes='big' >  </Avatar>
                     
-                   <h2>ONC Database System</h2>
+                   <h2>Project Integration</h2>
                  
                     {loginCheck()}
 

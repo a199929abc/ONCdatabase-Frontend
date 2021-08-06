@@ -17,7 +17,7 @@ import Main from '../../pages/Main/Main';
 import SearchComp from '../Search/Search';
 import VideoComp from '../Video/Video';
 import {BrowserRouter as Router,Switch, Route ,Link,NavLink} from 'react-router-dom';
-
+import VideoManageComp from '../Video/VideoManage';
 
 function Nav() {
     const { Search2 } = Input;
@@ -42,7 +42,9 @@ function Nav() {
                 <Menu.Item key="1"><Link to="/nav" >Home</Link></Menu.Item>
                 <Menu.Item key="2"><Link to="/nav/search">Part Search</Link></Menu.Item>
                 <Menu.Item key="3"><Link to="/nav/video">Video</Link></Menu.Item>
-                <Menu.Item key="4"><Link to="/nav/more">More</Link></Menu.Item>
+                <Menu.Item key="4"><Link to="/nav/videomanager">Video Manager</Link></Menu.Item>
+                <Menu.Item key="5"><Link to="/nav/more">More</Link></Menu.Item>
+                
         
             </Menu>
             </Header>
@@ -95,6 +97,7 @@ function Nav() {
                                 <Route path="/nav/more"   component={More}/>
                                 <Route path="/nav/search" component={SearchComp}/>
                                 <Route path="/nav/video" component={VideoComp}/>
+                                <Route path="/nav/videomanager" component={VideoManageComp}/>
                                 </Switch>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Design ©2021 Created by Kaiheng Zhang</Footer>

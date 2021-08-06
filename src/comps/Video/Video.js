@@ -3,7 +3,7 @@ import Nav from '../../comps/Nav/Nav';
 import axios from 'axios';
 
 import banzhuan from '../../img/banzhuan.jpg';
-import {Image,Typography,Divider,List,Menu,Layout, Button,Radio,Cascader} from 'antd';
+import {Image,Typography,Divider,List,Menu,Layout, Button,Radio,Cascader,Tag} from 'antd';
 import ReactPlayer from 'react-player'
 import { Breadcrumb } from 'antd';
 import React, { useState,useEffect } from "react";
@@ -11,8 +11,8 @@ import { ScreenShareTwoTone } from '@material-ui/icons';
 
 
 function VideoComp() {
-    const [curURL, setCurURL]  =useState("https://mvbkz.s3.us-west-1.amazonaws.com/csdn/day1/35.+Search+Insert+Position.mp4");
-    const [curTitle,setTitle]  = useState("");
+    const [curURL, setCurURL]  =useState("");
+    const [curTitle,setCurTitle]  = useState("");
     const [video, setVideo]= useState([]);
     const [curDay,setCurDay] = useState(1);
     const { SubMenu } = Menu;
@@ -21,6 +21,7 @@ function VideoComp() {
     const [openKeys, setOpenKeys] = React.useState(['sub1']);
     const [playbackRate, setPlaybackRate] = React.useState(1);
     const [speed, setSpeed]= useState("default");
+    const [curTag, setCurTag]= useState("LeetCode");
 
     // submenu keys of first level
     const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
@@ -83,7 +84,9 @@ function VideoComp() {
               )
             } else {
               return (<Menu.Item key={video[index].videoId}  onClick={e =>{
-               setCurURL(menu.url);setTitle(menu.title);}}  >{menu.title} </Menu.Item>)
+               setCurURL(menu.url);setCurTitle(menu.title);setCurTag(menu.tag);}}  >
+                {menu.title} 
+               </Menu.Item>)
             }
           })
         )
@@ -125,7 +128,10 @@ function VideoComp() {
                 {' '}{' '}{' '}{' '}{' '}
                 <Button onClick={sendVideoRequest} size={'large'}>Loading Video</Button>
                 <Title level={3} style={{padding:"10px"}}>{curTitle}</Title>
+                
                 <ReactPlayer
+                            width="70%"
+                            height="70%"
                             url={curURL}
                             controls = 'true'
                             playing = 'true'
@@ -140,7 +146,11 @@ function VideoComp() {
                             <Radio.Button  onClick={() => setPlaybackRate(1)}  value="default"> x1 </Radio.Button>
                             <Radio.Button  onClick={() => setPlaybackRate(2)}  value="small"> x2 </Radio.Button>
                     </Radio.Group>
-                
+                    <br/>
+                    <br/>
+                    <Tag color="magenta" >{curTag}</Tag>
+                    
+                   
                 </Content>
                 </Layout>
 
